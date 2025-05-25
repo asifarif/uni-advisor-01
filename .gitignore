@@ -83,6 +83,7 @@ vector_store/
 # Data files (exclude from git, use DVC or similar for large datasets)
 *.csv
 *.json
+!vercel.json
 *.pdf
 data/scraped/
 data/processed/
