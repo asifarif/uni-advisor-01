@@ -1,0 +1,5 @@
+# .vercelignore
+/backend
+/database
+/docs
+*.code-workspace
