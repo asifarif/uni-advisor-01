@@ -10,9 +10,7 @@ export const Layout = ({ children }: LayoutProps) => {
   return (
     <Box minH="100vh" display="flex" flexDirection="column">
       <Header />
-      <Box flex={1}>
-        {children}
-      </Box>
+      <Box flex={1}>{children}</Box>
       <Footer />
     </Box>
   );
