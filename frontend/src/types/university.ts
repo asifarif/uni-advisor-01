@@ -1,64 +1,69 @@
-export interface University {
-  id: string;
-  name: string;
-  shortName: string;
-  city: string;
-  province: string;
-  established: number;
-  type: 'public' | 'private';
-  logo: string;
-  website: string;
-  ranking?: {
-    hec?: number;
-    qs?: number;
-    local?: number;
+import { University } from './university';
+
+export interface UniversityWithDetails extends University {
+  overview?: {
+    description?: string;
+    rankings?: {
+      hec?: number;
+      qs?: number;
+      local?: number;
+    };
   };
-  programs: Program[];
-  fees: FeeStructure[];
-  admissions: AdmissionInfo;
-  contact: ContactInfo;
-  facilities: string[];
-  accreditations: string[];
-}
-
-export interface Program {
-  id: string;
-  name: string;
-  degree: 'undergraduate' | 'graduate' | 'postgraduate';
-  faculty: string;
-  duration: string;
-  creditHours: number;
-  description: string;
-  requirements: string[];
-  career_prospects: string[];
-}
-
-export interface FeeStructure {
-  program: string;
-  semester: number;
-  tuition: number;
-  admission: number;
-  security: number;
-  other: number;
-  total: number;
-  year: number;
-}
-
-export interface AdmissionInfo {
-  deadlines: {
-    fall: string;
-    spring?: string;
+  programs: {
+    id: string;
+    name: string;
+    degree: string;
+    faculty: string;
+    duration: string;
+    creditHours: number;
+    description: string;
+    requirements: string[];
+    careerProspects: string[];
+  }[];
+  fees: {
+    program: string;
+    semester: number;
+    tuition: number;
+    admission: number;
+    total: number;
+    year: number;
+  }[];
+  admissions: {
+    deadlines: {
+      fall?: string;
+      spring?: string;
+    };
+    requirements: {
+      undergraduate: string[];
+      graduate: string[];
+    };
+    tests: string[];
+    meritCriteria: string;
   };
-  requirements: {
-    [key: string]: string[];
+  campusLife: {
+    facilities: string[];
+    societies: string[];
+    events: string[];
   };
-  tests: string[];
-  merit_criteria: string;
-}
-
-export interface ContactInfo {
-  address: string;
-  phone: string;
-  email: string;
-  admissions_office: string;
+  placements: {
+    statistics: {
+      placementRate?: string;
+      averageSalary?: string;
+      topEmployers?: string[];
+    };
+  };
+  contact: {
+    address: string;
+    phone: string;
+    email: string;
+    admissionsOffice: string;
+  };
+  news: {
+    id: string;
+    title: string;
+    date: string;
+    summary: string;
+    url: string;
+  }[];
+  updatedAt: string;
 }

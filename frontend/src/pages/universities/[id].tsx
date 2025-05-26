@@ -4,7 +4,7 @@ import universities from '@/data/universities.json';
 import { UniversityCard } from '@/components/university/UniversityCard';
 import { Layout } from '@/components/common/Layout';
 import { AdBanner } from '@/components/common/AdBanner';
-import { University } from '@/types/university';
+import { UniversityWithDetails } from '@/types/university';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
@@ -14,11 +14,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const university = universities.find((uni) => uni.id === params?.id);
+  const university = universities.find((uni) => uni.id === params?.id) as UniversityWithDetails;
   return { props: { university } };
 };
 
-const UniversityPage = ({ university }: { university: University }) => {
+const UniversityPage = ({ university }: { university: UniversityWithDetails }) => {
   return (
     <Layout>
       <Box maxW="container.xl" mx="auto" p={6}>
