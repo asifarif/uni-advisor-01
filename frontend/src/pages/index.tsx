@@ -8,6 +8,7 @@ import { University } from '@/types/university';
 
 export default function Home() {
   const [search, setSearch] = useState('');
+  const filteredUniversities = (universities as unknown as University[]);
   const filteredUniversities = (universities as University[])
     .filter((uni) =>
       uni.name.toLowerCase().includes(search.toLowerCase()) ||
