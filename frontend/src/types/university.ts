@@ -60,9 +60,7 @@ export interface UniversityWithDetails extends University {
       placementRate?: string;
       averageSalary?: string;
       topEmployers?: string[];
-    };2025 PakUni Advisor. All rights reserved.
-
-
+    };
   };
   contact: {
     address: string;

@@ -6,7 +6,7 @@ export const Footer = () => {
       <Container maxW="container.xl">
         <VStack spacing={4} textAlign="center">
           <Text fontSize="sm" color="gray.600">
-            © 2024 PakUni Advisor. All rights reserved.
+            © 2025 PakUni Advisor. All rights reserved.
           </Text>
           <Text fontSize="xs" color="gray.500">
             Helping Pakistani students make informed university decisions
