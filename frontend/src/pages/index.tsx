@@ -4,11 +4,11 @@ import { Layout } from '@/components/common/Layout';
 import { UniversityCard } from '@/components/university/UniversityCard';
 import { AdBanner } from '@/components/common/AdBanner';
 import universities from '@/data/universities.json';
-import { University } from '@/types/university';
+import { UniversityWithDetails } from '@/types/university';
 
 export default function Home() {
   const [search, setSearch] = useState('');
-  const filteredUniversities = (universities as unknown as University[])
+  const filteredUniversities = (universities as UniversityWithDetails[])
     .filter((uni) =>
       uni.name.toLowerCase().includes(search.toLowerCase()) ||
       uni.city.toLowerCase().includes(search.toLowerCase())
