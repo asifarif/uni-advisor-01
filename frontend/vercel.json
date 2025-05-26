@@ -3,7 +3,7 @@
   "framework": "nextjs",
   "builds": [
     {
-      "src": "frontend/**/*",
+      "src": "**/*",
       "use": "@vercel/next"
     }
   ],

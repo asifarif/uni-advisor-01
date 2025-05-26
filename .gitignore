@@ -87,6 +87,7 @@ vector_store/
 !frontend/package.json
 !frontend/tsconfig.json
 !frontend/src/data/universities.json
+!frontend/vercel.json
 *.pdf
 data/scraped/
 data/processed/
