@@ -1,13 +1,10 @@
-import { Box, Container, Heading, Text, SimpleGrid, Button, Input, InputGroup, InputLeftElement, VStack, Link } from '@chakra-ui/react';
+import { Box, Container, Heading, Text, SimpleGrid, Button, Input, InputGroup, InputLeftElement, VStack } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Layout } from '@/components/common/Layout';
 import { UniversityCard } from '@/components/university/UniversityCard';
 import { AdBanner } from '@/components/common/AdBanner';
 import universities from '@/data/universities.json';
 import admissions from '@/data/admissions.json';
-// import scholarships from '@/data/scholarships.json';
-// import studyAbroad from '@/data/study-abroad.json';
-// import news from '@/data/news.json';
 import NextLink from 'next/link';
 
 export default function Home() {
@@ -42,7 +39,7 @@ export default function Home() {
         </SimpleGrid>
         <AdBanner adSlot="featured" />
         <Box my={6}>
-          <Heading size="md" mb="6">Latest Admissions</Heading>
+          <Heading size="md" mb={6}>Latest Admissions</Heading>
           <VStack spacing={4} align="stretch">
             {admissions.slice(0, 5).map((admission) => (
               <Box key={admission.id} p={4} bg="white" shadow="sm" rounded="md">
