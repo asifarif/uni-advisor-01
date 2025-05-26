@@ -11,7 +11,7 @@ import { University, UniversityWithDetails } from '@/types/university';
 const universities = rawData as UniversityWithDetails[];
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const filePath = path.join(process.cwd(), 'frontend', 'src', 'data', 'universities.json');
+  const filePath = path.join(process.cwd(), 'src', 'data', 'universities.json');
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const universities: UniversityWithDetails[] = JSON.parse(fileContents);
 
@@ -22,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const filePath = path.join(process.cwd(), 'frontend', 'src', 'data', 'universities.json');
+  const filePath = path.join(process.cwd(), 'src', 'data', 'universities.json');
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const universities: UniversityWithDetails[] = JSON.parse(fileContents);
   const university = universities.find((uni) => uni.id === params?.id);
