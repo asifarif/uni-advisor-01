@@ -6,7 +6,7 @@ import { Layout } from '@/components/common/Layout';
 import { AdBanner } from '@/components/common/AdBanner';
 import { University, UniversityWithDetails } from '@/types/university';
 
-const universities: UniversityWithDetails[] = rawData;
+const universities = rawData as UniversityWithDetails[];
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
