@@ -84,7 +84,7 @@ vector_store/
 *.csv
 *.json
 !vercel.json
-!frontend/package.json
+#!frontend/package.json
 *.pdf
 data/scraped/
 data/processed/
