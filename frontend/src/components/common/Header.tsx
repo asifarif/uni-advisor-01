@@ -7,7 +7,7 @@ export const Header = () => {
       <Flex maxW="container.xl" mx="auto" px={4} py={4} align="center" justify="space-between">
         <Link href="/">
           <Flex align="center">
-            <Image src="/images/logo.svg" alt="PakUni Advisor" w={8} h={8} />
+            <Image src="/images/logo.png" alt="PakUni Advisor" w={8} h={8} />
             <Text fontSize="2xl" fontWeight="bold" color="blue.600" ml={2}>
               PakUni Advisor
             </Text>

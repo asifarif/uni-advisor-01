@@ -1,9 +1,9 @@
 import { Box, Text, Image, Badge, Button, VStack, HStack } from '@chakra-ui/react';
 import Link from 'next/link';
-import { UniversityWithDetails } from '@/types/university';
+import { University } from '@/types/university';
 
 interface UniversityCardProps {
-  university: UniversityWithDetails;
+  university: University;
 }
 
 export const UniversityCard = ({ university }: UniversityCardProps) => {

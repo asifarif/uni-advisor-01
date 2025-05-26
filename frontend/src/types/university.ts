@@ -5,19 +5,7 @@ export interface University {
   city: string;
   province: string;
   established: number;
-  type: 'public' | 'private';
-  logo: string;
-  website: string;
-}
-
-export interface UniversityWithDetails {
-  id: string;
-  name: string;
-  shortName: string;
-  city: string;
-  province: string;
-  established: number;
-  type: "private" | "public";
+  type: string;
   logo: string;
   website: string;
   overview: {
@@ -28,22 +16,61 @@ export interface UniversityWithDetails {
       qs?: number;
     };
   };
-  contact: {
-    email: string;
-    phone: string;
-  };
-  socialLinks: {
-    facebook?: string;
-    twitter?: string;
-  };
+  programs: {
+    id: string;
+    name: string;
+    degree: string;
+    faculty: string;
+    duration: string;
+    creditHours: number;
+    description: string;
+    requirements: string[];
+    careerProspects: string[];
+  }[];
+  fees: {
+    program: string;
+    semester: number;
+    tuition: number;
+    admission: number;
+    total: number;
+    year: number;
+  }[];
   admissions: {
-    open: boolean;
-    deadline?: string;
+    deadlines: {
+      fall?: string;
+      spring?: string;
+    };
+    requirements: {
+      undergraduate: string[];
+      graduate: string[];
+    };
+    tests: string[];
+    meritCriteria: string;
   };
-  scholarships: {
-    available: boolean;
-    types: string[];
+  campusLife: {
+    facilities: string[];
+    societies: string[];
+    events: string[];
   };
-  createdAt: string;
+  placements: {
+    statistics: {
+      placementRate: string;
+      averageSalary: string;
+      topEmployers: string[];
+    };
+  };
+  contact: {
+    address: string;
+    phone: string;
+    email: string;
+    admissionsOffice: string;
+  };
+  news: {
+    id: string;
+    title: string;
+    date: string;
+    summary: string;
+    url: string;
+  }[];
   updatedAt: string;
 }
