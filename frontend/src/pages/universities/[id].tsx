@@ -4,7 +4,7 @@ import universities from '@/data/universities.json';
 import { UniversityCard } from '@/components/university/UniversityCard';
 import { Layout } from '@/components/common/Layout';
 import { AdBanner } from '@/components/common/AdBanner';
-import { UniversityWithDetails } from '@/types/university';
+import { University } from '@/types/university';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
@@ -21,7 +21,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return { props: { university } };
 };
 
-const UniversityPage = ({ university }: { university: UniversityWithDetails }) => {
+const UniversityPage = ({ university }: { university: University }) => {
   return (
     <Layout>
       <Box maxW="container.xl" mx="auto" p={6}>
