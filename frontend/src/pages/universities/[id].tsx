@@ -1,4 +1,6 @@
 import { Box, Tabs, TabList, TabPanels, Tab, TabPanel, Heading, Text, VStack, Table, Thead, Tbody, Tr, Th, Td, List, ListItem } from '@chakra-ui/react';
+import fs from 'fs';
+import path from 'path';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import rawData from '@/data/universities.json';
 import { UniversityCard } from '@/components/university/UniversityCard';
@@ -9,6 +11,10 @@ import { University, UniversityWithDetails } from '@/types/university';
 const universities = rawData as UniversityWithDetails[];
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const filePath = path.join(process.cwd(), 'frontend', 'src', 'data', 'universities.json');
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const universities: UniversityWithDetails[] = JSON.parse(fileContents);
+
   return {
     paths: universities.map((uni) => ({ params: { id: uni.id } })),
     fallback: false,
@@ -16,7 +22,11 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const university = universities.find((uni) => uni.id === params?.id) as UniversityWithDetails;
+  const filePath = path.join(process.cwd(), 'frontend', 'src', 'data', 'universities.json');
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const universities: UniversityWithDetails[] = JSON.parse(fileContents);
+  const university = universities.find((uni) => uni.id === params?.id);
+
   return { props: { university } };
 };
 
