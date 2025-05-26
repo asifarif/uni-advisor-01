@@ -20,7 +20,7 @@ export const AdBanner = ({ adSlot, adFormat = 'auto', fullWidthResponsive = true
 
   return (
     <Box textAlign="center" my={4}>
-      {process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT_ID ? (
+      {process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_CLIENT_ID && process.env.NODE_ENV === 'production' ? (
         <ins
           className="adsbygoogle"
           style={{ display: 'block' }}
@@ -30,8 +30,8 @@ export const AdBanner = ({ adSlot, adFormat = 'auto', fullWidthResponsive = true
           data-full-width-responsive={fullWidthResponsive}
         />
       ) : (
-        <Box bg="gray.100" p={4}>
-          Ad Placeholder
+        <Box bg="gray.100" p={4} borderRadius="md">
+          Ad Placeholder: {adSlot}
         </Box>
       )}
     </Box>

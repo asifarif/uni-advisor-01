@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, Image } from '@chakra-ui/react';
 import Link from 'next/link';
 
 export const Header = () => {
@@ -6,11 +6,13 @@ export const Header = () => {
     <Box bg="white" shadow="sm" position="sticky" top={0} zIndex={1000}>
       <Flex maxW="container.xl" mx="auto" px={4} py={4} align="center" justify="space-between">
         <Link href="/">
-          <Text fontSize="xl" fontWeight="bold" color="blue.600">
-            PakUni Advisor
-          </Text>
+          <Flex align="center">
+            <Image src="/images/logo.svg" alt="PakUni Advisor" w={8} h={8} />
+            <Text fontSize="2xl" fontWeight="bold" color="blue.600" ml={2}>
+              PakUni Advisor
+            </Text>
+          </Flex>
         </Link>
-        
         <Flex gap={6} align="center">
           <Link href="/universities">Universities</Link>
           <Link href="/compare">Compare</Link>
