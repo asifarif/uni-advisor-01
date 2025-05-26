@@ -1,12 +1,10 @@
 import { Box, Text, Image, Badge, Button, VStack, HStack } from '@chakra-ui/react';
 import Link from 'next/link';
-import { University } from '@/types/university';
-
+import { UniversityWithDetails } from '@/types/university';
 
 interface UniversityCardProps {
-  university: University;
+  university: UniversityWithDetails;
 }
-
 
 export const UniversityCard = ({ university }: UniversityCardProps) => {
   return (
@@ -19,7 +17,7 @@ export const UniversityCard = ({ university }: UniversityCardProps) => {
       _hover={{ shadow: 'lg', transform: 'translateY(-2px)' }}
     >
       <VStack spacing={4} align="center">
-        <Image src={university.logo} alt={university.name} w={16} h={16} />
+        <Image src={university.logo || '/images/placeholder.png'} alt={university.name} w={16} h={16} fallbackSrc="/images/placeholder.png" />
         <VStack spacing={2} textAlign="center">
           <Text fontWeight="bold" fontSize="lg">{university.name}</Text>
           <HStack>
