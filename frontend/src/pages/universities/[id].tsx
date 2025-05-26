@@ -1,10 +1,12 @@
 import { Box, Tabs, TabList, TabPanels, Tab, TabPanel, Heading, Text, VStack, Table, Thead, Tbody, Tr, Th, Td, List, ListItem } from '@chakra-ui/react';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import universities from '@/data/universities.json';
+import rawData from '@/data/universities.json';
 import { UniversityCard } from '@/components/university/UniversityCard';
 import { Layout } from '@/components/common/Layout';
 import { AdBanner } from '@/components/common/AdBanner';
-import { UniversityWithDetails } from '@/types/university';
+import { University, UniversityWithDetails } from '@/types/university';
+
+const universities: UniversityWithDetails[] = rawData;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {

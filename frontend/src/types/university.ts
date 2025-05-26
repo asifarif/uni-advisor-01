@@ -1,4 +1,14 @@
-import { University } from './university';
+export interface University {
+  id: string;
+  name: string;
+  shortName: string;
+  city: string;
+  province: string;
+  established: number;
+  type: 'public' | 'private';
+  logo: string;
+  website: string;
+}
 
 export interface UniversityWithDetails extends University {
   overview?: {
