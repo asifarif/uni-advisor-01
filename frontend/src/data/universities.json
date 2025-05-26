@@ -1,0 +1,167 @@
+[
+  {
+    "id": "lums",
+    "name": "Lahore University of Management Sciences",
+    "shortName": "LUMS",
+    "city": "Lahore",
+    "province": "Punjab",
+    "established": 1985,
+    "type": "private",
+    "logo": "/images/universities/lums-logo.png",
+    "website": "https://lums.edu.pk",
+    "overview": {
+      "description": "LUMS is a leading private university known for its business and liberal arts programs.",
+      "rankings": {
+        "hec": 3,
+        "local": 2
+      }
+    },
+    "programs": [
+      {
+        "id": "cs",
+        "name": "Computer Science",
+        "degree": "undergraduate",
+        "faculty": "Computer Science",
+        "duration": "4 years",
+        "creditHours": 130,
+        "description": "Covers software engineering and AI.",
+        "requirements": ["FSc Pre-Engineering", "SAT or LUMS Test"],
+        "careerProspects": ["Software Engineer", "Data Analyst"]
+      },
+      {
+        "id": "bba",
+        "name": "Business Administration",
+        "degree": "undergraduate",
+        "faculty": "Business",
+        "duration": "4 years",
+        "creditHours": 120,
+        "description": "Focuses on management and entrepreneurship.",
+        "requirements": ["FSc or A-Levels", "SAT or LUMS Test"],
+        "careerProspects": ["Manager", "Entrepreneur"]
+      }
+    ],
+    "fees": [
+      {
+        "program": "Computer Science",
+        "semester": 1,
+        "tuition": 500000,
+        "admission": 50000,
+        "total": 550000,
+        "year": 2025
+      }
+    ],
+    "admissions": {
+      "deadlines": {
+        "fall": "April 15, 2025",
+        "spring": "October 15, 2025"
+      },
+      "requirements": {
+        "undergraduate": ["FSc with 70% marks", "SAT or LUMS Test"],
+        "graduate": ["Bachelor’s with 2.5 CGPA", "GRE"]
+      },
+      "tests": ["SAT", "LUMS Test"],
+      "meritCriteria": "50% FSc + 50% Test"
+    },
+    "campusLife": {
+      "facilities": ["Libraries", "Labs", "Sports Complex", "Hostels"],
+      "societies": ["LUMS Entrepreneurial Society", "Debating Club"],
+      "events": ["LUMUN", "Career Fair"]
+    },
+    "placements": {
+      "statistics": {
+        "placementRate": "90%",
+        "averageSalary": "PKR 100,000/month",
+        "topEmployers": ["Unilever", "IBM"]
+      }
+    },
+    "contact": {
+      "address": "DHA, Lahore Cantt, Lahore 54792, Pakistan",
+      "phone": "+92-42-3560-8000",
+      "email": "admissions@lums.edu.pk",
+      "admissionsOffice": "Office of Admissions, LUMS"
+    },
+    "news": [
+      {
+        "id": "news1",
+        "title": "LUMS Hosts International Conference",
+        "date": "May 10, 2025",
+        "summary": "LUMS organizes a global AI conference.",
+        "url": "https://lums.edu.pk/news/ai-conference"
+      }
+    ],
+    "updatedAt": "2025-05-25T10:00:00Z"
+  },
+  {
+    "id": "nust",
+    "name": "National University of Sciences and Technology",
+    "shortName": "NUST",
+    "city": "Islamabad",
+    "province": "Islamabad Capital Territory",
+    "established": 1991,
+    "type": "public",
+    "logo": "/images/universities/nust-logo.png",
+    "website": "https://nust.edu.pk",
+    "overview": {
+      "description": "NUST is a top public university specializing in science and technology.",
+      "rankings": {
+        "hec": 1,
+        "qs": 401,
+        "local": 1
+      }
+    },
+    "programs": [
+      {
+        "id": "cs",
+        "name": "Computer Science",
+        "degree": "undergraduate",
+        "faculty": "Computing",
+        "duration": "4 years",
+        "creditHours": 133,
+        "description": "Focuses on software and systems.",
+        "requirements": ["FSc Pre-Engineering", "NET"],
+        "careerProspects": ["Software Developer", "Systems Analyst"]
+      }
+    ],
+    "fees": [
+      {
+        "program": "Computer Science",
+        "semester": 1,
+        "tuition": 200000,
+        "admission": 30000,
+        "total": 230000,
+        "year": 2025
+      }
+    ],
+    "admissions": {
+      "deadlines": {
+        "fall": "June 30, 2025"
+      },
+      "requirements": {
+        "undergraduate": ["FSc with 60% marks", "NET"],
+        "graduate": ["Bachelor’s with 2.5 CGPA", "GAT"]
+      },
+      "tests": ["NET"],
+      "meritCriteria": "70% FSc + 30% NET"
+    },
+    "campusLife": {
+      "facilities": ["Labs", "Library", "Hostels", "Sports Facilities"],
+      "societies": ["NUST Tech Club", "Drama Society"],
+      "events": ["TechFest", "Sports Gala"]
+    },
+    "placements": {
+      "statistics": {
+        "placementRate": "85%",
+        "averageSalary": "PKR 80,000/month",
+        "topEmployers": ["Netsol", "Telenor"]
+      }
+    },
+    "contact": {
+      "address": "H-12, Islamabad, Pakistan",
+      "phone": "+92-51-9085-6102",
+      "email": "info@nust.edu.pk",
+      "admissionsOffice": "Admissions Office, NUST"
+    },
+    "news": [],
+    "updatedAt": "2025-05-25T10:00:00Z"
+  }
+]
