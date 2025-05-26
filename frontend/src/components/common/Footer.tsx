@@ -1,4 +1,5 @@
-import { Box, Container, Text, VStack } from '@chakra-ui/react';
+import { Box, Container, Text, VStack, Link as ChakraLink } from '@chakra-ui/react';
+import Link from 'next/link';
 
 export const Footer = () => {
   return (
@@ -8,9 +9,12 @@ export const Footer = () => {
           <Text fontSize="sm" color="gray.600">
             © 2025 PakUni Advisor. All rights reserved.
           </Text>
-          <Text fontSize="xs" color="gray.500">
+          <Text fontSize="x" color="gray.500">
             Helping Pakistani students make informed university decisions
           </Text>
+          <ChakraLink as={Link} href="/privacy" fontSize="xs" color="blue.600">
+            Privacy Policy
+          </ChakraLink>
         </VStack>
       </Container>
     </Box>
