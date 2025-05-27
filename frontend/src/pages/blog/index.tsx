@@ -4,8 +4,8 @@ import { AdBanner } from '@/components/common/AdBanner';
 import Link from 'next/link';
 
 const posts = [
-  { id: 'top-universities', title: 'Top Universities in Pakistan 2025' },
-  { id: 'admission-tips', title: 'Admission Tips for Pakistani Universities' },
+  { id: 'Degrees or Skills', title: 'Degrees or Skills? Realigning Our Higher Education Focus in Pakistan' },
+  { id: 'engineering-education', title: 'Engineering Institutions in Karachi' },
 ];
 
 export default function Blog() {
