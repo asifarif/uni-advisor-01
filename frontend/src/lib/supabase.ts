@@ -32,7 +32,10 @@ export interface SupabaseUniversityRow {
   type: string;
   logo: string;
   website?: string;
-  overview?: { description?: string };
+overview?: {
+    description?: string;
+    rankings?: { hec: number; local: number; qs?: number };
+  };
   fees?: string | { program?: string; semester?: string; type?: string; total?: number }[];
   campuslife?: { facilities?: string[] | string; societies?: string[] | string; events?: string[] | string };
   placements?: any;

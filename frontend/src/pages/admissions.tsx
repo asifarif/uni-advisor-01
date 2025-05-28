@@ -48,10 +48,7 @@ export async function getServerSideProps() {
     })
     .map((adm) => ({
       id: adm.id,
-      university:
-        adm.universities?.[0]?.name
-          ? toTitleCase(adm.universities[0].name)
-          : toTitleCase(adm.university_id),
+      university: adm.universities?.[0]?.name || toTitleCase(adm.university_id),
       addate: adm.addate || '',
       deadline: adm.deadline || '',
       details: adm.details

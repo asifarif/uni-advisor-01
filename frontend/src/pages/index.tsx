@@ -17,6 +17,107 @@ interface Admission {
   deadline: string;
 }
 
+// Helper function to transform fees data
+function transformFees(fees: string | { program?: string; semester?: string; type?: string; total?: number }[] | undefined): University['fees'] {
+  if (!fees) {
+    return [];
+  }
+  
+  if (typeof fees === 'string') {
+    // If fees is a string, create a default fee structure
+    return [{
+      program: 'General',
+      semester: 1,
+      tuition: 0,
+      admission: 0,
+      total: 0,
+      year: new Date().getFullYear()
+    }];
+  }
+  
+  if (Array.isArray(fees)) {
+    // Transform the Supabase fee structure to match University interface
+    return fees.map((fee, index) => ({
+      program: fee.program || 'General',
+      semester: parseInt(fee.semester || '1'),
+      tuition: fee.total || 0,
+      admission: 0,
+      total: fee.total || 0,
+      year: new Date().getFullYear()
+    }));
+  }
+  
+  return [];
+}
+
+// Helper function to transform campus life data
+function transformCampusLife(campuslife: any): University['campusLife'] {
+  if (!campuslife) {
+    return { facilities: [], societies: [], events: [] };
+  }
+  
+  return {
+    facilities: Array.isArray(campuslife.facilities) ? campuslife.facilities : 
+                typeof campuslife.facilities === 'string' ? [campuslife.facilities] : [],
+    societies: Array.isArray(campuslife.societies) ? campuslife.societies : 
+               typeof campuslife.societies === 'string' ? [campuslife.societies] : [],
+    events: Array.isArray(campuslife.events) ? campuslife.events : 
+            typeof campuslife.events === 'string' ? [campuslife.events] : []
+  };
+}
+
+// Helper function to transform contact data
+function transformContact(contact: any): University['contact'] {
+  if (!contact) {
+    return { address: '', phone: '', email: '', admissionsOffice: '' };
+  }
+  
+  return {
+    address: contact.address || '',
+    phone: contact.phone || '',
+    email: contact.email || '',
+    admissionsOffice: contact.admissionsOffice || ''
+  };
+}
+
+// Helper function to transform Supabase university data to University type
+function transformUniversity(uni: SupabaseUniversityRow): University {
+  return {
+    id: uni.id,
+    name: uni.name,
+    shortName: uni.shortname || '',
+    city: uni.city || '',
+    province: uni.province || '',
+    established: uni.established || 0,
+    type: uni.type || '',
+    logo: uni.logo || '/default-logo.png',
+    website: uni.website || '',
+    overview: {
+      description: uni.overview?.description || '',
+      rankings: uni.overview?.rankings || { hec: 0, local: 0 }
+    },
+    programs: [],
+    fees: transformFees(uni.fees),
+    admissions: {
+      deadlines: {},
+      requirements: { undergraduate: [], graduate: [] },
+      tests: [],
+      meritCriteria: ''
+    },
+    campusLife: transformCampusLife(uni.campuslife),
+    placements: {
+      statistics: {
+        placementRate: '',
+        averageSalary: '',
+        topEmployers: []
+      }
+    },
+    contact: transformContact(uni.contact),
+    news: Array.isArray(uni.news) ? uni.news : [],
+    updatedAt: uni.updatedat || ''
+  };
+}
+
 export async function getServerSideProps() {
   const { data: universities, error: uniError } = await supabase
     .from('universities')
@@ -42,31 +143,12 @@ export async function getServerSideProps() {
 
   const formattedAdmissions: Admission[] = (admissions as SupabaseAdmissionRow[])?.map((adm) => ({
     id: adm.id,
-    university: adm.universities?.[0]?.name ? toTitleCase(adm.universities[0].name) : toTitleCase(adm.university_id),
+    university: adm.universities?.[0]?.name || adm.university_id,
     addate: adm.addate || '',
     deadline: adm.deadline || ''
   })) || [];
 
-  const formattedUniversities: University[] = (universities as SupabaseUniversityRow[])?.map((uni) => ({
-    id: uni.id,
-    name: toTitleCase(uni.name),
-    shortName: uni.shortname || '',
-    city: uni.city || '',
-    province: uni.province || '',
-    established: uni.established || 0,
-    type: uni.type || '',
-    logo: uni.logo || '/default-logo.png', // Default logo
-    website: uni.website || '',
-    overview: uni.overview || { description: '' },
-    fees: uni.fees || '',
-    campusLife: uni.campuslife || { facilities: [], societies: [], events: [] },
-    placements: uni.placements || {},
-    contact: uni.contact || { address: '', phone: '', email: '' },
-    news: uni.news || [],
-    updatedAt: uni.updatedat || '',
-    programs: [], // Placeholder
-    admissions: [] // Placeholder
-  })) || [];
+  const formattedUniversities: University[] = (universities as SupabaseUniversityRow[])?.map(transformUniversity) || [];
 
   return {
     props: {
@@ -74,15 +156,6 @@ export async function getServerSideProps() {
       admissions: formattedAdmissions
     }
   };
-}
-
-// Utility function to convert to title case
-function toTitleCase(str: string): string {
-  return str
-    .toLowerCase()
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
 }
 
 export default function Home({ initialUniversities, admissions }: { initialUniversities: University[], admissions: Admission[] }) {
@@ -107,28 +180,7 @@ export default function Home({ initialUniversities, admissions }: { initialUnive
       console.error('Supabase error:', error);
       setUniversities([]);
     } else {
-      setUniversities(
-        (data as SupabaseUniversityRow[]).map((uni) => ({
-          id: uni.id,
-          name: toTitleCase(uni.name),
-          shortName: uni.shortname || '',
-          city: uni.city || '',
-          province: uni.province || '',
-          established: uni.established || 0,
-          type: uni.type || '',
-          logo: uni.logo || '/default-logo.png', // Default logo
-          website: uni.website || '',
-          overview: uni.overview || { description: '' },
-          fees: uni.fees || '',
-          campusLife: uni.campuslife || { facilities: [], societies: [], events: [] },
-          placements: uni.placements || {},
-          contact: uni.contact || { address: '', phone: '', email: '' },
-          news: uni.news || [],
-          updatedAt: uni.updatedat || '',
-          programs: [],
-          admissions: []
-        }))
-      );
+      setUniversities((data as SupabaseUniversityRow[]).map(transformUniversity));
     }
     setIsLoading(false);
   };
