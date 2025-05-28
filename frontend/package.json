@@ -13,17 +13,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "2.8.2",
+    "@chakra-ui/system": "^2.6.2",
     "@emotion/react": "11.11.4",
     "@emotion/styled": "11.11.5",
+    "@supabase/supabase-js": "^2.49.8",
     "framer-motion": "10.18.0",
     "next": "15.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "@supabase/supabase-js": "^2.43.2",
-    "@chakra-ui/react": "2.8.2",
-    "@chakra-ui/icons": "^2.1.1",
-    "@chakra-ui/system": "^2.6.2"
-
+    "lodash":""
   },
   "devDependencies": {
     "@types/node": "22.5.4",
