@@ -1,42 +1,25 @@
 import { Box, Container, Heading, VStack, Text } from '@chakra-ui/react';
 import { Layout } from '@/components/common/Layout';
-import { supabase } from '@/lib/supabase';
-
-// Type for raw Supabase response
-interface RawAdmission {
-  id: number;
-  university_id: string;
-  addate: string;
-  deadline: string;
-  details: {
-    requirements: {
-      undergraduate: string[];
-      graduate: string[];
-    };
-    tests: string[];
-    meritCriteria: string;
-  };
-  universities: { name: string }[]; // Array, as returned by Supabase
-}
+import { supabase, SupabaseAdmissionRow } from '@/lib/supabase';
 
 // Type for formatted admission
-interface Admission {
-  id: number;
+interface AdmissionData {
+  id: string;
   university: string;
   addate: string;
   deadline: string;
-  details: {
+  details?: {
     requirements: {
       undergraduate: string[];
       graduate: string[];
     };
     tests: string[];
-    meritCriteria: string;
+    meritCriteria?: string;
   };
 }
 
 export async function getServerSideProps() {
-  const { data: admissions, error } = await supabase
+  const { data, error } = await supabase
     .from('admissions')
     .select(`
       id,
@@ -45,7 +28,7 @@ export async function getServerSideProps() {
       deadline,
       details,
       universities (name)
-    `) // Revert to simpler join syntax
+    `)
     .order('deadline', { ascending: true });
 
   if (error) {
@@ -53,25 +36,40 @@ export async function getServerSideProps() {
     return { props: { admissions: [] } };
   }
 
-  // Deduplicate client-side
+  const admissions = data as SupabaseAdmissionRow[];
+
   const seen = new Set<string>();
-  const formattedAdmissions: Admission[] = admissions?.filter((adm: RawAdmission) => {
-    const key = `${adm.university_id}-${adm.deadline}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  }).map((adm: RawAdmission) => ({
-    id: adm.id,
-    university: adm.universities[0]?.name || adm.university_id, // Access first element
-    addate: adm.addate,
-    deadline: adm.deadline,
-    details: adm.details
-  })) || [];
+  const formattedAdmissions: AdmissionData[] = admissions
+    .filter((adm) => {
+      const key = `${adm.university_id}-${adm.deadline}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .map((adm) => ({
+      id: adm.id,
+      university:
+        adm.universities?.[0]?.name
+          ? toTitleCase(adm.universities[0].name)
+          : toTitleCase(adm.university_id),
+      addate: adm.addate || '',
+      deadline: adm.deadline || '',
+      details: adm.details
+    }));
 
   return { props: { admissions: formattedAdmissions } };
 }
 
-export default function Admissions({ admissions }: { admissions: Admission[] }) {
+// Utility function to convert to title case
+function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+export default function Admissions({ admissions }: { admissions: AdmissionData[] }) {
   return (
     <Layout>
       <Container maxW="container.xl" py={8}>

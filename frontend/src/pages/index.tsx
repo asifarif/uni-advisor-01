@@ -3,19 +3,18 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { Layout } from '@/components/common/Layout';
 import { UniversityCard } from '@/components/university/UniversityCard';
 import { AdBanner } from '@/components/common/AdBanner';
-import { supabase } from '@/lib/supabase';
+import { supabase, SupabaseAdmissionRow, SupabaseUniversityRow } from '@/lib/supabase';
 import NextLink from 'next/link';
 import { University } from '@/types/university';
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 
-// Type for raw admission response
-interface RawAdmission {
-  id: number;
-  university_id: string;
+// Type for formatted admission
+interface Admission {
+  id: string;
+  university: string;
   addate: string;
   deadline: string;
-  universities: { name: string }[];
 }
 
 export async function getServerSideProps() {
@@ -41,26 +40,49 @@ export async function getServerSideProps() {
     return { props: { initialUniversities: [], admissions: [] } };
   }
 
-  const formattedAdmissions = admissions?.map((adm: RawAdmission) => ({
+  const formattedAdmissions: Admission[] = (admissions as SupabaseAdmissionRow[])?.map((adm) => ({
     id: adm.id,
-    university: adm.universities[0]?.name || adm.university_id,
-    addate: adm.addate,
-    deadline: adm.deadline
+    university: adm.universities?.[0]?.name ? toTitleCase(adm.universities[0].name) : toTitleCase(adm.university_id),
+    addate: adm.addate || '',
+    deadline: adm.deadline || ''
+  })) || [];
+
+  const formattedUniversities: University[] = (universities as SupabaseUniversityRow[])?.map((uni) => ({
+    id: uni.id,
+    name: toTitleCase(uni.name),
+    shortName: uni.shortname || '',
+    city: uni.city || '',
+    province: uni.province || '',
+    established: uni.established || 0,
+    type: uni.type || '',
+    logo: uni.logo || '/default-logo.png', // Default logo
+    website: uni.website || '',
+    overview: uni.overview || { description: '' },
+    fees: uni.fees || '',
+    campusLife: uni.campuslife || { facilities: [], societies: [], events: [] },
+    placements: uni.placements || {},
+    contact: uni.contact || { address: '', phone: '', email: '' },
+    news: uni.news || [],
+    updatedAt: uni.updatedat || '',
+    programs: [], // Placeholder
+    admissions: [] // Placeholder
   })) || [];
 
   return {
     props: {
-      initialUniversities: universities || [],
+      initialUniversities: formattedUniversities,
       admissions: formattedAdmissions
     }
   };
 }
 
-interface Admission {
-  id: number;
-  university: string;
-  addate: string;
-  deadline: string;
+// Utility function to convert to title case
+function toTitleCase(str: string): string {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 export default function Home({ initialUniversities, admissions }: { initialUniversities: University[], admissions: Admission[] }) {
@@ -85,7 +107,28 @@ export default function Home({ initialUniversities, admissions }: { initialUnive
       console.error('Supabase error:', error);
       setUniversities([]);
     } else {
-      setUniversities(data as University[]); // Explicit cast to match University type
+      setUniversities(
+        (data as SupabaseUniversityRow[]).map((uni) => ({
+          id: uni.id,
+          name: toTitleCase(uni.name),
+          shortName: uni.shortname || '',
+          city: uni.city || '',
+          province: uni.province || '',
+          established: uni.established || 0,
+          type: uni.type || '',
+          logo: uni.logo || '/default-logo.png', // Default logo
+          website: uni.website || '',
+          overview: uni.overview || { description: '' },
+          fees: uni.fees || '',
+          campusLife: uni.campuslife || { facilities: [], societies: [], events: [] },
+          placements: uni.placements || {},
+          contact: uni.contact || { address: '', phone: '', email: '' },
+          news: uni.news || [],
+          updatedAt: uni.updatedat || '',
+          programs: [],
+          admissions: []
+        }))
+      );
     }
     setIsLoading(false);
   };
