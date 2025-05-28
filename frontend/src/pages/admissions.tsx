@@ -44,7 +44,7 @@ export async function getServerSideProps() {
     return true;
   }).map((adm) => ({
     id: adm.id,
-    university: adm.universities?.name || adm.university_id,
+    //university: adm.universities?.name || adm.university_id,
     addate: adm.addate,
     deadline: adm.deadline,
     details: adm.details
