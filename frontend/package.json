@@ -23,7 +23,8 @@
     "next": "15.3.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "lodash":""
+    "lodash":"",
+    "dotenv":""
   },
   "devDependencies": {
     "@types/node": "22.5.4",
