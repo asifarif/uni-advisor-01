@@ -9,6 +9,15 @@ import { University } from '@/types/university';
 import { useState, useEffect } from 'react';
 import debounce from 'lodash/debounce';
 
+// Type for raw admission response
+interface RawAdmission {
+  id: number;
+  university_id: string;
+  addate: string;
+  deadline: string;
+  universities: { name: string }[];
+}
+
 export async function getServerSideProps() {
   const { data: universities, error: uniError } = await supabase
     .from('universities')
@@ -32,9 +41,9 @@ export async function getServerSideProps() {
     return { props: { initialUniversities: [], admissions: [] } };
   }
 
-  const formattedAdmissions = admissions?.map((adm) => ({
+  const formattedAdmissions = admissions?.map((adm: RawAdmission) => ({
     id: adm.id,
-    university: adm.universities?.name || adm.university_id,
+    university: adm.universities[0]?.name || adm.university_id,
     addate: adm.addate,
     deadline: adm.deadline
   })) || [];
@@ -56,7 +65,7 @@ interface Admission {
 
 export default function Home({ initialUniversities, admissions }: { initialUniversities: University[], admissions: Admission[] }) {
   const [searchInput, setSearchInput] = useState('');
-  const [universities, setUniversities] = useState(initialUniversities);
+  const [universities, setUniversities] = useState<University[]>(initialUniversities);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchUniversities = async (term: string) => {
@@ -76,7 +85,7 @@ export default function Home({ initialUniversities, admissions }: { initialUnive
       console.error('Supabase error:', error);
       setUniversities([]);
     } else {
-      setUniversities(data || []);
+      setUniversities(data as University[]); // Explicit cast to match University type
     }
     setIsLoading(false);
   };

@@ -2,6 +2,24 @@ import { Box, Container, Heading, VStack, Text } from '@chakra-ui/react';
 import { Layout } from '@/components/common/Layout';
 import { supabase } from '@/lib/supabase';
 
+// Type for raw Supabase response
+interface RawAdmission {
+  id: number;
+  university_id: string;
+  addate: string;
+  deadline: string;
+  details: {
+    requirements: {
+      undergraduate: string[];
+      graduate: string[];
+    };
+    tests: string[];
+    meritCriteria: string;
+  };
+  universities: { name: string }[]; // Array, as returned by Supabase
+}
+
+// Type for formatted admission
 interface Admission {
   id: number;
   university: string;
@@ -27,7 +45,7 @@ export async function getServerSideProps() {
       deadline,
       details,
       universities (name)
-    `)
+    `) // Revert to simpler join syntax
     .order('deadline', { ascending: true });
 
   if (error) {
@@ -36,15 +54,15 @@ export async function getServerSideProps() {
   }
 
   // Deduplicate client-side
-  const seen = new Set();
-  const formattedAdmissions = admissions?.filter((adm) => {
+  const seen = new Set<string>();
+  const formattedAdmissions: Admission[] = admissions?.filter((adm: RawAdmission) => {
     const key = `${adm.university_id}-${adm.deadline}`;
     if (seen.has(key)) return false;
     seen.add(key);
     return true;
-  }).map((adm) => ({
+  }).map((adm: RawAdmission) => ({
     id: adm.id,
-    //university: adm.universities?.name || adm.university_id,
+    university: adm.universities[0]?.name || adm.university_id, // Access first element
     addate: adm.addate,
     deadline: adm.deadline,
     details: adm.details
