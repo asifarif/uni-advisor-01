@@ -1,4 +1,4 @@
-import { Box, Container, Heading, Text, SimpleGrid, Button, Input, InputGroup, InputLeftElement, VStack, Spinner } from '@chakra-ui/react';
+import { Box, Container, Heading, Text, SimpleGrid, Button, Input, InputGroup, InputLeftElement, VStack, Spinner, Flex } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Layout } from '@/components/common/Layout';
 import { UniversityCard } from '@/components/university/UniversityCard';
@@ -24,7 +24,6 @@ function transformFees(fees: string | { program?: string; semester?: string; typ
   }
   
   if (typeof fees === 'string') {
-    // If fees is a string, create a default fee structure
     return [{
       program: 'General',
       semester: 1,
@@ -36,7 +35,6 @@ function transformFees(fees: string | { program?: string; semester?: string; typ
   }
   
   if (Array.isArray(fees)) {
-    // Transform the Supabase fee structure to match University interface
     return fees.map((fee, index) => ({
       program: fee.program || 'General',
       semester: parseInt(fee.semester || '1'),
@@ -141,19 +139,30 @@ export async function getServerSideProps() {
     return { props: { initialUniversities: [], admissions: [] } };
   }
 
-  const formattedAdmissions: Admission[] = (admissions as SupabaseAdmissionRow[])?.map((adm) => ({
+  // [CHANGE] Fetch university names directly to avoid join issues
+  const universityNames: { [key: string]: string } = {};
+  const { data: uniNames } = await supabase
+    .from('universities')
+    .select('id, name');
+  if (uniNames) {
+    uniNames.forEach((uni: { id: string; name: string }) => {
+      universityNames[uni.id] = uni.name;
+    });
+  }
+
+  const uniqueAdmissions = Array.from(new Map(admissions.map(adm => [adm.id, adm])).values()).map((adm) => ({
     id: adm.id,
-    university: adm.universities?.[0]?.name || adm.university_id,
+    university: universityNames[adm.university_id] || adm.university_id, // Use proper-case name
     addate: adm.addate || '',
     deadline: adm.deadline || ''
-  })) || [];
+  }));
 
   const formattedUniversities: University[] = (universities as SupabaseUniversityRow[])?.map(transformUniversity) || [];
 
   return {
     props: {
       initialUniversities: formattedUniversities,
-      admissions: formattedAdmissions
+      admissions: uniqueAdmissions
     }
   };
 }
@@ -214,11 +223,14 @@ export default function Home({ initialUniversities, admissions }: { initialUnive
           </InputGroup>
         </Container>
       </Box>
+      
       <Container maxW="container.xl" py={8}>
         <Heading size="md" mb={6}>Featured Universities</Heading>
         <AdBanner adSlot="hero" />
         {isLoading ? (
-          <Spinner size="xl" />
+          <Flex justify="center" py={4}>
+            <Spinner size="md" color="brand.blue" />
+          </Flex>
         ) : (
           <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={4}>
             {universities.length ? (
@@ -231,24 +243,33 @@ export default function Home({ initialUniversities, admissions }: { initialUnive
           </SimpleGrid>
         )}
         <AdBanner adSlot="featured" />
+
         <Box my={6}>
           <Heading size="md" mb={6}>Latest Admissions</Heading>
-          <VStack spacing={4} align="stretch">
-            {admissions.length ? (
-              admissions.map((admission) => (
-                <Box key={admission.id} p={4} bg="white" shadow="sm" rounded="md">
-                  <Text fontWeight="bold">{admission.university}</Text>
-                  <Text fontSize="sm">Ad Date: {admission.addate}</Text>
-                  <Text fontSize="sm">Deadline: {admission.deadline}</Text>
-                </Box>
-              ))
-            ) : (
-              <Text>No admissions found</Text>
-            )}
-          </VStack>
-          <NextLink href="/admissions" passHref>
-            <Button mt={4} size="sm">View All Admissions</Button>
-          </NextLink>
+          {admissions.length ? (
+            <>
+              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={4}>
+                {admissions.map((admission) => (
+                  <Box key={admission.id} p={4} bg="white" shadow="md" rounded="lg" border="1px" borderColor="gray.200">
+                    <Text fontWeight="bold" fontSize="md" mb={2} color="brand.blue">
+                      {admission.university}
+                    </Text>
+                    <Text fontSize="sm" color="gray.600" mb={1}>
+                      📅 Ad Date: {admission.addate}
+                    </Text>
+                    <Text fontSize="sm" color="red.500" fontWeight="medium">
+                      ⏰ Deadline: {admission.deadline}
+                    </Text>
+                  </Box>
+                ))}
+              </SimpleGrid>
+              <NextLink href="/admissions" passHref>
+                <Button mt={4} colorScheme="blue" size="sm">View All Admissions</Button>
+              </NextLink>
+            </>
+          ) : (
+            <Text>No admissions found</Text>
+          )}
         </Box>
       </Container>
     </Layout>
